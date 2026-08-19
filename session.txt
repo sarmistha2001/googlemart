@@ -1,1 +1,0 @@
-cmd --resume 3e3823ad-068f-4bbc-9b1b-24618c6528b3

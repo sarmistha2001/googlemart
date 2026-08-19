@@ -1,3 +1,0 @@
-
- Session ID: 9cdaa06c-1d6d-4dee-81c3-4d1d45d56b5b
-  └ ~/.commandcode/projects/…/9cdaa06c-1d6d-4dee-81c3-4d1d45d56b5b.jsonl
