@@ -1,0 +1,4 @@
+# Disable PHP execution inside uploads
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phar|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>
