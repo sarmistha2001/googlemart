@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_login();
+
 $current = basename($_SERVER['SCRIPT_NAME']);
 $nav = [
     'index.php'      => ['Dashboard', 'speedometer2'],

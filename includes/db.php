@@ -66,14 +66,26 @@ function get_product_images(int $productId): array
     $st->execute([$productId]);
     return $st->fetchAll(PDO::FETCH_COLUMN);
 }
-
-function get_related_products(string $idsCsv): array
+function get_related_by_category(int $categoryId, int $excludeId, int $limit = 4): array
 {
-    $ids = array_filter(array_map('intval', explode(',', $idsCsv)));
-    if (!$ids) return [];
-    $in = implode(',', $ids);
-    return db()->query("SELECT p.*, c.icon AS icon FROM products p LEFT JOIN categories c ON c.id=p.category_id WHERE p.id IN ($in) AND p.is_active=1")->fetchAll();
+    $st = db()->prepare(
+        'SELECT p.*, c.icon AS icon, c.name AS cat_name
+         FROM products p
+         LEFT JOIN categories c ON c.id = p.category_id
+         WHERE p.category_id = ? AND p.id != ? AND p.is_active = 1
+         ORDER BY p.id DESC
+         LIMIT ' . (int)$limit
+    );
+    $st->execute([$categoryId, $excludeId]);
+    return $st->fetchAll();
 }
+// function get_related_products(string $idsCsv): array
+// {
+//     $ids = array_filter(array_map('intval', explode(',', $idsCsv)));
+//     if (!$ids) return [];
+//     $in = implode(',', $ids);
+//     return db()->query("SELECT p.*, c.icon AS icon FROM products p LEFT JOIN categories c ON c.id=p.category_id WHERE p.id IN ($in) AND p.is_active=1")->fetchAll();
+// }
 
 /** Render a product card (swiper slide) */
 function product_card(array $p, string $link = 'product.php?slug='): string

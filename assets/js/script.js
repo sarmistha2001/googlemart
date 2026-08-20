@@ -69,6 +69,36 @@ document.addEventListener("DOMContentLoaded", function () {
         1200: { slidesPerView: 10, spaceBetween: 8 }
       }
     });
+    new Swiper(".relatedSwiper", {
+    slidesPerView: 2,
+    spaceBetween: 12,
+    grabCursor: true,
+    loop: true,
+    autoplay: { delay: 2500, disableOnInteraction: false, pauseOnMouseEnter: true },
+    pagination: {
+        el: ".related-pagination",
+        clickable: true
+    },
+
+    breakpoints: {
+        576: {
+            slidesPerView: 3,
+            spaceBetween: 12
+        },
+        768: {
+            slidesPerView: 4,
+            spaceBetween: 14
+        },
+        992: {
+            slidesPerView: 5,
+            spaceBetween: 14
+        },
+        1200: {
+            slidesPerView: 5,
+            spaceBetween: 16
+        }
+    }
+});
     new Swiper(".newArrivalSwiper", {
       slidesPerView: 2,
       spaceBetween: 12,
@@ -145,4 +175,58 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   if (window.lucide) lucide.createIcons();
+});
+function setMainImg(btn) {
+  const newSrc = btn.getAttribute('data-img');
+  if (!newSrc) return;
+
+  const mainImg = document.getElementById('mainImg');
+  mainImg.src = newSrc;
+
+  // toggle active state on thumb buttons
+  document.querySelectorAll('.thumb-btn').forEach(function (el) {
+    el.classList.remove('active');
+  });
+  btn.classList.add('active');
+}
+
+// ---------- Open zoom modal with a given image src ----------
+function openZoom(src) {
+  if (!src) return;
+  const zoomImg = document.getElementById('zoomImg');
+  zoomImg.src = src;
+
+  const modalEl = document.getElementById('photoZoomModal');
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  modal.show();
+}
+
+// ---------- Pick an image from the gallery modal ----------
+function pickFromGallery(imgEl) {
+  if (!imgEl || !imgEl.src) return;
+
+  // update the main product image
+  const mainImg = document.getElementById('mainImg');
+  mainImg.src = imgEl.src;
+
+  // sync active state on visible thumbnails, if this src matches one
+  document.querySelectorAll('.thumb-btn').forEach(function (el) {
+    el.classList.toggle('active', el.getAttribute('data-img') === imgEl.src);
+  });
+
+  // close the gallery modal
+  const galleryModalEl = document.getElementById('galleryModal');
+  const galleryModal = bootstrap.Modal.getInstance(galleryModalEl);
+  if (galleryModal) galleryModal.hide();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const enquiryModalEl = document.getElementById('enquiryModal');
+  if (enquiryModalEl) {
+    enquiryModalEl.addEventListener('show.bs.modal', function () {
+      const mainImgSrc = document.getElementById('mainImg')?.src;
+      const enqImg = document.getElementById('enqImg');
+      if (mainImgSrc && enqImg) enqImg.src = mainImgSrc;
+    });
+  }
 });

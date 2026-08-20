@@ -6,6 +6,41 @@
 if (!function_exists('db')) { require_once __DIR__ . '/db.php'; }
 if (!isset($S)) { $S = get_settings(); }
 if (!isset($announce)) { $announce = $S['announcement_text'] ?? ''; }
+
+/**
+ * Build a lookup of active product names -> slug, so menu items whose
+ * label matches an actual product can link straight to that product page
+ * instead of just the category page.
+ */
+$menuProductLookup = [];
+foreach (db()->query("SELECT name, slug FROM products WHERE is_active=1") as $pr) {
+    $menuProductLookup[mb_strtolower(trim($pr['name']))] = $pr['slug'];
+}
+
+/**
+ * Build a lookup of active category slugs, so we never link to a
+ * category.php?slug=... that doesn't actually exist in the DB.
+ */
+$menuCategorySlugs = [];
+foreach (db()->query("SELECT slug FROM categories WHERE is_active=1") as $cat) {
+    $menuCategorySlugs[$cat['slug']] = true;
+}
+
+function resolve_menu_link(string $label, string $categorySlug): string
+{
+    global $menuProductLookup, $menuCategorySlugs;
+
+    $key = mb_strtolower(trim($label));
+    if (isset($menuProductLookup[$key])) {
+        return 'product.php?slug=' . urlencode($menuProductLookup[$key]);
+    }
+
+    if (isset($menuCategorySlugs[$categorySlug])) {
+        return 'category.php?slug=' . urlencode($categorySlug);
+    }
+
+    return 'categories.php';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +57,7 @@ if (!isset($announce)) { $announce = $S['announcement_text'] ?? ''; }
 <body class="bg-light" style="background:#fcfbff!important">
 <!-- Top Announcement — Printo style -->
 <div class="top-announce" style="background:#e4007c;color:#fff;font-size:12px;padding:6px 10px;text-align:center;font-weight:700;line-height:1.4">
-  <a href="category.php" class="text-white text-decoration-none"><?= e($announce) ?></a>
+  <a href="#" class="text-white text-decoration-none"><?= e($announce) ?></a>
 </div>
 
 <!-- Main header — sticky -->
@@ -34,8 +69,8 @@ if (!isset($announce)) { $announce = $S['announcement_text'] ?? ''; }
     </a>
     <div class="flex-grow-1 d-flex justify-content-center" style="max-width:720px;min-width:0">
       <div class="position-relative w-100">
-        <form action="categories.php" method="get" class="position-relative w-100">
-          <input name="q" placeholder="Search" aria-label="Search" class="form-control" style="height:42px;border-radius:12px;border:1px solid #E5E7EB;padding-left:14px;padding-right:44px;background:#fff;font-size:14px;box-shadow:none">
+        <form action="search.php" method="get" class="position-relative w-100">
+          <input name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Search" aria-label="Search" class="form-control" style="height:42px;border-radius:12px;border:1px solid #E5E7EB;padding-left:14px;padding-right:44px;background:#fff;font-size:14px;box-shadow:none">
           <button class="btn position-absolute top-50 end-0 translate-middle-y me-1 d-flex align-items-center justify-content-center" style="width:34px;height:34px;border-radius:50%;color:#8D9199" type="submit"><i data-lucide="search" style="width:16px;height:16px"></i></button>
         </form>
       </div>
@@ -100,7 +135,7 @@ if (!isset($announce)) { $announce = $S['announcement_text'] ?? ''; }
         ['Recognition', ['Badges','badge'],['Trophies','badge'],['Medals','badge'],['Awards','badge']],
     ]],
 ]; ?>
-<div class="d-none d-lg-block position-relative" style="background:#f8f9fa;border-top:1px solid #eee;border-bottom:1px solid #eee">
+<div class="d-none  d-lg-block position-relative" style="background:#f8f9fa;border-top:1px solid #eee;border-bottom:1px solid #eee">
   <div class="menu-80">
     <div class="d-flex justify-content-center align-items-stretch" style="gap:0;overflow:visible">
       <?php $gi = 0; foreach ($GMENU as $gm): $style = $gi === 0 ? 'color:#f47916!important;font-weight:700;' : 'font-weight:500;'; ?>
@@ -119,7 +154,7 @@ if (!isset($announce)) { $announce = $S['announcement_text'] ?? ''; }
           <div class="col-6 col-lg-3">
             <div class="small fw-bold text-uppercase mb-1" style="font-size:11px;letter-spacing:.05em;color:#700895"><?= e($heading) ?></div>
             <?php foreach ($grp as $lk): ?>
-            <a href="category.php?slug=<?= e($lk[1]) ?>" class="d-block text-decoration-none small py-1" style="color:#334155;font-size:12px;line-height:1.6"><?= e($lk[0]) ?></a>
+            <a href="<?= e(resolve_menu_link($lk[0], $lk[1])) ?>" class="d-block text-decoration-none small py-1" style="color:#334155;font-size:12px;line-height:1.6"><?= e($lk[0]) ?></a>
             <?php endforeach; ?>
           </div>
           <?php endforeach; ?>
@@ -129,26 +164,61 @@ if (!isset($announce)) { $announce = $S['announcement_text'] ?? ''; }
     <?php endforeach; ?>
   </div>
 </div>
-<!-- Mega menu — mobile pills -->
-<div class="d-lg-none" style="background:#f8f9fa;border-bottom:1px solid #eee">
-  <div class="menu-80 py-2 d-flex gap-2 overflow-auto" style="white-space:nowrap;scrollbar-width:none">
-    <?php $gi = 0; foreach ($GMENU as $gm): ?>
-    <a href="<?= e($gm['link']) ?>" class="btn btn-sm rounded-pill flex-shrink-0 <?= $gi === 0 ? 'fw-bold' : 'btn-light border-0' ?>" style="<?= $gi === 0 ? 'background:#fff;color:#f47916;border:1px solid #f4791633;' : 'background:#fff;color:#334155;' ?>font-size:12px"><?= e($gm['title']) ?></a>
-    <?php $gi++; endforeach; ?>
-  </div>
-</div>
+
+
 <!-- Mobile offcanvas -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileNav" aria-labelledby="mobileNavLabel">
-  <div class="offcanvas-header border-bottom"><span class="display fw-bold" id="mobileNavLabel">google<span class="text-brand"> mart</span></span><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button></div>
-  <div class="offcanvas-body">
-    <div class="d-flex flex-column gap-1">
-      <?php foreach ($GMENU as $gm): ?>
-      <a href="<?= e($gm['link']) ?>" class="text-decoration-none fw-semibold text-dark" style="padding:10px 0;border-bottom:1px solid #f1f5f9"><?= e($gm['title']) ?></a>
-      <?php foreach ($gm['groups'] as $grp): $h = array_shift($grp); foreach ($grp as $lk): ?>
-      <a href="category.php?slug=<?= e($lk[1]) ?>" class="text-decoration-none text-secondary" style="padding:4px 0 4px 14px;font-size:13px"><?= e($lk[0]) ?></a>
-      <?php endforeach; endforeach; endforeach; ?>
-      <hr>
-      
+  <div class="offcanvas-header border-bottom"><span class="display fw-bold" id="mobileNavLabel"><img src="assets/images/logo.jpeg" alt="Google Mart" class="brand-logo" style="height:64px;width:auto;background:#fff;border-radius:12px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.35)"></span><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button></div>
+  <div class="offcanvas-body p-0">
+    <div class="d-flex flex-column">
+      <?php foreach ($GMENU as $i => $gm): $panelId = 'mnav-' . e($gm['key']); ?>
+      <div class="mnav-item border-bottom" style="border-color:#f1f5f9!important">
+        <div class="d-flex align-items-stretch">
+          <a href="<?= e($gm['link']) ?>" class="flex-grow-1 text-decoration-none fw-semibold text-dark px-3" style="padding-top:12px;padding-bottom:12px;font-size:14px"><?= e($gm['title']) ?></a>
+          <button type="button" class="btn border-0 px-3 mnav-toggle" data-bs-toggle="collapse" data-bs-target="#<?= $panelId ?>" aria-expanded="false" aria-controls="<?= $panelId ?>" aria-label="Toggle <?= e($gm['title']) ?> submenu">
+            <i data-lucide="chevron-down" style="width:16px;height:16px" class="mnav-chevron"></i>
+          </button>
+        </div>
+        <div class="collapse" id="<?= $panelId ?>">
+          <div class="pb-2 ps-3">
+            <?php foreach ($gm['groups'] as $grp): $h = array_shift($grp); ?>
+            <div class="small fw-bold text-uppercase mt-2 mb-1" style="font-size:10px;letter-spacing:.05em;color:#700895"><?= e($h) ?></div>
+            <?php foreach ($grp as $lk): ?>
+            <a href="<?= e(resolve_menu_link($lk[0], $lk[1])) ?>" class="text-decoration-none text-secondary d-block" style="padding:4px 0 4px 10px;font-size:13px"><?= e($lk[0]) ?></a>
+            <?php endforeach; ?>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+      <?php endforeach; ?>
+      <hr class="m-0">
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.mnav-toggle').forEach(function (btn) {
+    var targetSel = btn.getAttribute('data-bs-target');
+    var targetEl = document.querySelector(targetSel);
+    if (!targetEl) return;
+
+    targetEl.addEventListener('shown.bs.collapse', function () {
+      btn.setAttribute('aria-expanded', 'true');
+      var chevron = btn.querySelector('.mnav-chevron');
+      if (chevron) chevron.style.transform = 'rotate(180deg)';
+    });
+    targetEl.addEventListener('hidden.bs.collapse', function () {
+      btn.setAttribute('aria-expanded', 'false');
+      var chevron = btn.querySelector('.mnav-chevron');
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    });
+  });
+});
+</script>
+
+<style>
+.mnav-chevron { transition: transform .2s ease; }
+.mnav-toggle { background: transparent; color: #64748b; }
+.mnav-toggle:focus { box-shadow: none; }
+</style>

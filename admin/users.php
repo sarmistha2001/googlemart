@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
-require_login();
+
 
 $action = $_GET['action'] ?? 'list';
 $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);

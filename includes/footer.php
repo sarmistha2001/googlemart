@@ -23,6 +23,7 @@ $credit = $S['footer_credit'] ?? 'Drafticode';
   <div class="footer-glow"></div>
   <div class="container-1280">
     <div class="row g-4 g-lg-5 py-5">
+
       <div class="col-12 col-lg-5">
         <div class="d-flex gap-3 align-items-center text-white">
           <img src="assets/images/logo.jpeg" alt="<?= e($siteName) ?>" class="brand-logo" style="height:64px;width:auto;background:#fff;border-radius:12px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.35)">
@@ -31,17 +32,19 @@ $credit = $S['footer_credit'] ?? 'Drafticode';
             <span class="small" style="color:#a78bfa;letter-spacing:.18em;font-size:10px">PRINT • GIFT • GROW</span>
           </div>
         </div>
-        <p class="small mt-3" style="max-width:38ch;line-height:1.7">India's favourite print &amp; gifting brand. Premium quality, fair pricing, delivered fast.</p>
-        <div class="d-flex gap-2 mt-3">
-          <a href="#" class="social-btn rounded-circle d-flex justify-content-center align-items-center" style="width:36px;height:36px;background:rgba(255,255,255,.07)"><i class="bi bi-instagram" style="font-size:15px"></i></a>
-          <a href="#" class="social-btn rounded-circle d-flex justify-content-center align-items-center" style="width:36px;height:36px;background:rgba(255,255,255,.07)"><i class="bi bi-facebook" style="font-size:15px"></i></a>
-          <a href="#" class="social-btn rounded-circle d-flex justify-content-center align-items-center" style="width:36px;height:36px;background:rgba(255,255,255,.07)"><i class="bi bi-linkedin" style="font-size:15px"></i></a>
-          <a href="#" class="social-btn rounded-circle d-flex justify-content-center align-items-center" style="width:36px;height:36px;background:rgba(255,255,255,.07)"><i class="bi bi-twitter-x" style="font-size:15px"></i></a>
+        <p class="small mt-4" style="max-width:36ch;font-size:13px;line-height:1.7;color:#94a3b8"><?= e($footerTagline ?? "India's favourite print & gifting brand. Premium quality, fair pricing, delivered fast — with free design help on every order.") ?></p>
+        <div class="d-flex gap-2 mt-4">
+          <?php if (!empty($instagram)): ?><a class="social-btn" href="<?= e($instagram) ?>" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a><?php endif; ?>
+          <?php if (!empty($facebook)): ?><a class="social-btn" href="<?= e($facebook) ?>" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a><?php endif; ?>
+          <?php if (!empty($linkedin)): ?><a class="social-btn" href="<?= e($linkedin) ?>" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a><?php endif; ?>
+          <?php if (!empty($twitter)): ?><a class="social-btn" href="<?= e($twitter) ?>" target="_blank" rel="noopener" aria-label="X"><i class="bi bi-twitter-x"></i></a><?php endif; ?>
+          <?php if (!empty($youtube)): ?><a class="social-btn" href="<?= e($youtube) ?>" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a><?php endif; ?>
         </div>
       </div>
-      <div class="col-6 col-lg-2">
-        <div class="small fw-bold text-white mb-3" style="font-size:13px">Products</div>
-        <ul class="list-unstyled small d-flex flex-column gap-2">
+
+       <div class="col-6 col-lg-2">
+        <div class="footer-heading">Products</div>
+        <ul class="footer-links list-unstyled small d-flex flex-column gap-2">
           <li><a href="categories.php" class="footer-link-inline">All Products</a></li>
           <li><a href="category.php?slug=visiting-card" class="footer-link-inline">Visiting Cards</a></li>
           <li><a href="category.php?slug=t-shirt" class="footer-link-inline">Apparel</a></li>
@@ -49,28 +52,40 @@ $credit = $S['footer_credit'] ?? 'Drafticode';
           <li><a href="category.php?slug=office-art" class="footer-link-inline">Stationery</a></li>
         </ul>
       </div>
+
       <div class="col-6 col-lg-2">
-        <div class="small fw-bold text-white mb-3" style="font-size:13px">Company</div>
-        <ul class="list-unstyled small d-flex flex-column gap-2">
-          <li><a href="about.php" class="footer-link-inline">About Us</a></li>
-          <li><a href="contact.php" class="footer-link-inline">Contact Us</a></li>
-          <li><a href="terms.php" class="footer-link-inline">Terms &amp; Conditions</a></li>
-          <li><a href="privacy.php" class="footer-link-inline">Privacy Policy</a></li>
+        <div class="footer-heading">Company</div>
+        <ul class="footer-links">
+          <li><a href="about.php">About Us</a></li>
+          <li><a href="contact.php">Contact Us</a></li>
+          <li><a href="terms.php">Terms &amp; Conditions</a></li>
+          <li><a href="privacy.php">Privacy Policy</a></li>
         </ul>
       </div>
+
       <div class="col-12 col-lg-3">
-        <div class="small fw-bold text-white mb-3" style="font-size:13px">Get in touch</div>
-        <ul class="list-unstyled small d-flex flex-column gap-2">
+        <div class="footer-heading">Get in Touch</div>
+        <ul class="footer-contact">
           <li><i data-lucide="map-pin" class="fc-icon"></i><span><?= e($addr) ?></span></li>
-          <li><i data-lucide="phone" class="fc-icon"></i><span><a href="tel:<?= e(preg_replace('/[^0-9]/','',$phone1)) ?>" class="footer-link-inline"><?= e($phone1) ?></a> &nbsp; <a href="tel:<?= e(preg_replace('/[^0-9]/','',$phone2)) ?>" class="footer-link-inline"><?= e($phone2) ?></a></span></li>
-          <li><i data-lucide="mail" class="fc-icon"></i><a href="mailto:<?= e($email) ?>" class="footer-link-inline"><?= e($email) ?></a></li>
+          <li><i data-lucide="phone" class="fc-icon"></i><span><a href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phone1)) ?>"><?= e($phone1) ?></a><?php if (!empty($phone2)): ?><a href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phone2)) ?>"><?= e($phone2) ?></a><?php endif; ?></span></li>
+          <li><i data-lucide="mail" class="fc-icon"></i><a href="mailto:<?= e($email) ?>"><?= e($email) ?></a></li>
           <li><i data-lucide="clock" class="fc-icon"></i><span><?= e($hours) ?></span></li>
         </ul>
       </div>
+
     </div>
-    <div class="border-top py-3 d-flex flex-wrap gap-2 justify-content-between small" style="border-color:rgba(255,255,255,.08)!important;font-size:11px">
-      <span><?= e($copyright) ?> • <?= e($credit) ?></span>
-      <span class="d-flex gap-3"><a href="privacy.php" class="footer-link-inline">Privacy</a><a href="terms.php" class="footer-link-inline">Terms</a><a href="#" class="footer-link-inline">Sitemap</a></span>
+
+    <div class="footer-bottom d-flex flex-wrap gap-3 justify-content-between align-items-center">
+      <span>
+    <?= e($copyright) ?> •
+    <a href="https://drafticode.com/" target="_blank" rel="noopener noreferrer">
+        <?= e(strip_tags($credit)) ?>
+    </a>
+</span>
+      <span class="d-flex gap-4">
+        <a href="privacy.php" class="text-decoration-none footer-link-inline">Privacy</a>
+        <a href="terms.php" class="text-decoration-none footer-link-inline">Terms</a>
+      </span>
     </div>
   </div>
 </footer>

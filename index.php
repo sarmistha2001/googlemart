@@ -9,17 +9,17 @@ $prodCards = function (array $items, string $link = 'product.php?slug='): string
 };
 ?>
 <?php include __DIR__ . "/includes/header.php"; ?>
-<!-- Banner 2 — secondary promos -->
+
+<!-- Banner 1 — Printo 2-up -->
 <div class="container-1280 mt-4">
-  <div class="row g-3 row-cols-2">
-    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner1.png" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#e4007c,#ff8cc8)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
-    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner2.png" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#00aeef,#5fd3ff)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
+  <div class="row g-3 row-cols-1 ">
+    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="https://printo-s3.dietpixels.net/Mobile_1785999989.jpg?quality=70&format=webp&w=1200" alt="Promo" class="w-100 object-cover" style="aspect-ratio:16/7;object-fit:cover" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#700895,#a855f7)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
+   
   </div>
 </div>
 
-
 <!-- Categories — icon strip like reference image (Swiper) -->
-<div class="container-1280 mt-5">
+<div class="container-1280 mt-3">
   <div class="swiper catSwiper" style="padding-bottom:20px;">
     <div class="swiper-wrapper">
       <?php foreach (get_categories() as $c): ?>
@@ -45,13 +45,15 @@ $prodCards = function (array $items, string $link = 'product.php?slug='): string
     <div class="swiper-pagination cat-pagination" style="bottom:0;"></div>
   </div>
 </div>
-<!-- Banner 1 — Printo 2-up -->
+
+<!-- Banner 2 — secondary promos -->
 <div class="container-1280 mt-4">
-  <div class="row g-3 row-cols-1 ">
-    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="https://printo-s3.dietpixels.net/Mobile_1785999989.jpg?quality=70&format=webp&w=1200" alt="Promo" class="w-100 object-cover" style="aspect-ratio:16/7;object-fit:cover" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#700895,#a855f7)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
-   
+  <div class="row g-3 row-cols-2">
+    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner1.png" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#e4007c,#ff8cc8)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
+    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner2.png" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#00aeef,#5fd3ff)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
   </div>
 </div>
+
 <?php /*
 <div class="container-1280 mt-5">
   <div class="d-flex align-items-end justify-content-between">
@@ -88,7 +90,7 @@ $prodCards = function (array $items, string $link = 'product.php?slug='): string
 <!-- Category highlight: Professional Printing -->
 <div class="container-1280 mt-5">
   <div class="d-flex align-items-end justify-content-between">
-    <div><h2 class="display fw-bold mb-1" style="font-size:22px">Professional Printing</h2><p class="small  text-primary  mb-0">Digital Print • Binding • Digital Xerox • Plan Xerox • Die Cutting • Visiting Card</p></div>
+    <div><h2 class="display fw-bold mb-1" style="font-size:22px">Professional Printing</h2><p class="small  text-primary  mb-0">Digital Print • Digital Xerox • Plan Xerox • Die Cutting • Visiting Card</p></div>
     <div class="d-flex align-items-center gap-2">
       <div class="d-flex gap-2"><button class="printStationery-prev btn btn-light rounded-circle border carousel-nav d-flex align-items-center justify-content-center p-0" style="width:36px;height:36px" aria-label="Previous"><i data-lucide="chevron-left" style="width:14px;height:14px"></i></button><button class="printStationery-next btn btn-light rounded-circle border carousel-nav d-flex align-items-center justify-content-center p-0" style="width:36px;height:36px" aria-label="Next"><i data-lucide="chevron-right" style="width:14px;height:14px"></i></button></div>
       <a href="categories.php" class="btn btn-outline-secondary btn-sm rounded-pill carousel-view d-none d-sm-inline-flex">View all <i data-lucide="arrow-right" class="ms-1"></i></a>
