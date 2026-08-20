@@ -13,7 +13,7 @@ $prodCards = function (array $items, string $link = 'product.php?slug='): string
 <!-- Banner 1 — Printo 2-up -->
 <div class="container-1280 mt-4">
   <div class="row g-3 row-cols-1 ">
-    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="https://printo-s3.dietpixels.net/Mobile_1785999989.jpg?quality=70&format=webp&w=1200" alt="Promo" class="w-100 object-cover" style="aspect-ratio:16/7;object-fit:cover" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#700895,#a855f7)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
+    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner.png" alt="Promo" class="w-100 object-cover" style="aspect-ratio:16/7;object-fit:fill" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#700895,#a855f7)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
    
   </div>
 </div>
@@ -49,7 +49,7 @@ $prodCards = function (array $items, string $link = 'product.php?slug='): string
 <!-- Banner 2 — secondary promos -->
 <div class="container-1280 mt-4">
   <div class="row g-3 row-cols-2">
-    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner1.png" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#e4007c,#ff8cc8)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
+    <div class="col"><a href="category.php?slug=binding" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/thesis.png" alt="Promo" class="w-100 object-fill promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#02155c,#ff8cc8)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
     <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="assets/images/banner2.png" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#00aeef,#5fd3ff)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
   </div>
 </div>
@@ -134,7 +134,7 @@ $prodCards = function (array $items, string $link = 'product.php?slug='): string
 
 <div class="container-1280 mt-4">
   <div class="row g-3 row-cols-2">
-    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="https://printo-s3.dietpixels.net/Mobile_1785999989.jpg?quality=70&format=webp&w=1200" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#e4007c,#ff8cc8)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
+    <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="https://printo-s3.dietpixels.net/Mobile_1785999989.jpg?quality=70&format=webp&w=1200" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#02155c,#ff8cc8)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
     <div class="col"><a href="category.php" class="d-block overflow-hidden rounded-24 shadow-soft"><img src="https://printo-s3.dietpixels.net/Mobile_1786445173.jpg?quality=70&format=webp&w=1200" alt="Promo" class="w-100 object-cover promo-square" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#00aeef,#5fd3ff)';this.parentElement.style.minHeight='180px';this.style.display='none'"></a></div>
   </div>
 </div>

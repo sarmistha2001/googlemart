@@ -52,11 +52,13 @@ function resolve_menu_link(string $label, string $categorySlug): string
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
 <link href="assets/css/style.css" rel="stylesheet">
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="assets/images/logo.jpeg">
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-light" style="background:#fcfbff!important">
 <!-- Top Announcement — Printo style -->
-<div class="top-announce" style="background:#e4007c;color:#fff;font-size:12px;padding:6px 10px;text-align:center;font-weight:700;line-height:1.4">
+<div class="top-announce" style="background:#02155c;color:#fff;font-size:12px;padding:6px 10px;text-align:center;font-weight:700;line-height:1.4">
   <a href="#" class="text-white text-decoration-none"><?= e($announce) ?></a>
 </div>
 
@@ -77,7 +79,7 @@ function resolve_menu_link(string $label, string $categorySlug): string
     </div>
     <div class="d-flex align-items-center gap-3 ms-auto flex-shrink-0 d-none d-md-flex">
       <a href="https://wa.me/<?= e($waNum) ?>" target="_blank" rel="noopener" class="d-flex align-items-center justify-content-center rounded-circle text-white text-decoration-none" style="width:42px;height:42px;background:#25d366;flex-shrink:0" aria-label="WhatsApp"><i class="bi bi-whatsapp" style="font-size:24px;line-height:1"></i></a>
-      <a href="tel:+<?= e($phNum) ?>" class="d-flex align-items-center gap-1 text-decoration-none text-white fw-bold px-3 py-2 rounded-pill flex-shrink-0" style="background:#e4007c;font-size:13px"><i data-lucide="phone" style="width:15px;height:15px"></i><span class="d-none d-lg-inline">Contact Now</span></a>
+      <a href="tel:+<?= e($phNum) ?>" class="d-flex align-items-center gap-1 text-decoration-none text-white fw-bold px-3 py-2 rounded-pill flex-shrink-0" style="background:#02155c;font-size:13px"><i data-lucide="phone" style="width:15px;height:15px"></i><span class="d-none d-lg-inline">Contact Now</span></a>
     </div>
     <button class="btn d-lg-none p-0 border-0 flex-shrink-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav"><i data-lucide="menu" style="width:22px;height:22px"></i></button>
   </div>

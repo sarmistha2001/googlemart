@@ -668,15 +668,15 @@ img {
     box-shadow: 0 6px 18px rgba(255, 242, 50, 0.55);
 }
 .carousel-view {
-    background: #da4886 !important;
-    border-color: #da4886 !important;
+    background: #02155c !important;
+    border-color: #020c30 !important;
     color: #fff !important;
     font-weight: 700;
-    box-shadow: 0 4px 14px rgba(218, 72, 134, 0.35);
+    box-shadow: 0 4px 14px rgba(15, 44, 148, 0.35);
 }
 .carousel-view:hover {
-    background: #c93a77 !important;
-    border-color: #c93a77 !important;
+    background: #02155c !important;
+    border-color: #020c30 !important;
     color: #fff !important;
     box-shadow: 0 6px 20px rgba(218, 72, 134, 0.5);
 }

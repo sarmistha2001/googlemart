@@ -142,30 +142,55 @@ $cats = db()->query('SELECT id, name FROM categories ORDER BY sort_order, id')->
 
 // ---------- LIST ----------
 if ($action === 'list') {
-  $base = 'SELECT p.*, c.name AS cat_name FROM products p LEFT JOIN categories c ON c.id=p.category_id';
+  // Category filter
+  $filter_cat = (int)($_GET['category_id'] ?? 0);
+
+  $base = 'SELECT p.*, c.name AS cat_name, c.sort_order AS cat_sort FROM products p LEFT JOIN categories c ON c.id=p.category_id';
+  if ($filter_cat > 0) {
+    $base .= ' WHERE p.category_id = ' . $filter_cat;
+  }
+
   $pg = paginate(db(), $base, 10);
-  $rows = db()->query($base . " ORDER BY p.id DESC LIMIT {$pg['limit']} OFFSET {$pg['offset']}")->fetchAll();
+  // Order by category first (so products are grouped category by category), then newest first within category
+  $rows = db()->query($base . " ORDER BY c.sort_order ASC, c.id ASC, p.id DESC LIMIT {$pg['limit']} OFFSET {$pg['offset']}")->fetchAll();
   $page_title = 'Products';
   require __DIR__ . '/header.php';
 ?>
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <div>
       <h4 class="mb-0 fw-bold">Products</h4>
-      <span class="text-secondary small"><?= $pg['total'] ?> total • <?= $pg['limit'] ?> per page</span>
+      <span class="text-secondary small"><?= $pg['total'] ?> total • <?= $pg['limit'] ?> per page<?= $filter_cat ? ' • filtered' : '' ?></span>
     </div>
     <a href="products.php?action=add" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg me-1"></i>Add Product</a>
   </div>
+
+  <div class="card mb-3">
+    <div class="card-body py-2">
+      <form method="get" class="d-flex align-items-center gap-2 flex-wrap">
+        <input type="hidden" name="action" value="list">
+        <label class="label-sm mb-0 text-secondary">Filter by category:</label>
+        <select class="form-select form-select-sm" style="max-width:260px" name="category_id" onchange="this.form.submit()">
+          <option value="0">All categories</option>
+          <?php foreach ($cats as $c): ?>
+            <option value="<?= $c['id'] ?>" <?= $filter_cat === (int)$c['id'] ? 'selected' : '' ?>><?= e($c['name']) ?></option>
+          <?php endforeach; ?>
+        </select>
+        <?php if ($filter_cat): ?>
+          <a href="products.php" class="btn btn-sm btn-outline-secondary">Clear filter</a>
+        <?php endif; ?>
+      </form>
+    </div>
+  </div>
+
   <div class="card">
     <div class="table-responsive">
       <table class="table data mb-0 align-middle">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Sl No</th>
             <th>Image</th>
             <th>Name</th>
             <th>Category</th>
-            <!-- <th>Badge</th>
-            <th>Flags</th> -->
             <th class="text-center">Imgs</th>
             <th class="text-end">Actions</th>
           </tr>
@@ -173,27 +198,29 @@ if ($action === 'list') {
         <tbody>
           <?php if (!$rows): ?>
             <tr>
-              <td colspan="8">
+              <td colspan="6">
                 <div class="empty-state"><i class="bi bi-box"></i>
-                  <div>No products yet. Click "Add Product" to create one.</div>
+                  <div>No products found<?= $filter_cat ? ' for this category' : ' yet' ?>. <?= $filter_cat ? '' : 'Click "Add Product" to create one.' ?></div>
                 </div>
               </td>
             </tr>
           <?php endif; ?>
+          <?php $last_cat_id = null; $sl = $pg['offset'] + 1; ?>
           <?php foreach ($rows as $r): ?>
+            <?php if ((int)$r['category_id'] !== $last_cat_id): ?>
+              <?php $last_cat_id = (int)$r['category_id']; ?>
+              <tr class="table-light">
+                <td colspan="6" class="fw-bold small text-uppercase text-secondary py-2">
+                  <i class="bi bi-folder2-open me-1"></i><?= e($r['cat_name'] ?? 'Uncategorized') ?>
+                </td>
+              </tr>
+            <?php endif; ?>
             <?php $cnt = (int)db()->query('SELECT COUNT(*) FROM product_images WHERE product_id=' . (int)$r['id'])->fetchColumn(); ?>
             <tr>
-              <td class="text-secondary">#<?= $r['id'] ?></td>
+              <td class="text-secondary"><?= $sl++ ?></td>
               <td><?php if ($r['main_image']): ?><img src="<?= e(img_url($r['main_image'])) ?>" class="thumb" alt=""><?php else: ?><span class="text-secondary">—</span><?php endif; ?></td>
               <td class="fw-semibold"><?= e($r['name']) ?><br><small class="text-secondary"><?= e($r['slug']) ?></small></td>
               <td><span class="badge bg-light text-dark border"><?= e($r['cat_name'] ?? '—') ?></span></td>
-              <?php /*<td><?= $r['badge'] ? '<span class="badge bg-dark">' . e($r['badge']) . '</span>' : '<span class="text-secondary">—</span>' ?></td>
-              <td>
-                <?php if ($r['is_featured']) echo '<span class="badge bg-warning-subtle text-warning-emphasis">Featured</span> '; ?>
-                <?php if ($r['is_new']) echo '<span class="badge bg-info-subtle text-info-emphasis">New</span> '; ?>
-                <?php if ($r['is_trending']) echo '<span class="badge bg-success-subtle text-success-emphasis">Trending</span> '; ?>
-                <?php if (!$r['is_featured'] && !$r['is_new'] && !$r['is_trending']) echo '<span class="text-secondary">—</span>'; ?>
-              </td> */ ?>
               <td class="text-center"><span class="badge bg-light text-dark border"><?= $cnt ?></span></td>
               <td class="text-end text-nowrap">
                 <a href="products.php?action=edit&id=<?= $r['id'] ?>" class="btn btn-sm btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i></a>

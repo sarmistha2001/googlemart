@@ -60,19 +60,51 @@ $announce = $S["announcement_text"] ?? "";
           <span class="badge rounded-pill d-inline-flex align-items-center gap-2" style="background:var(--brandLight);color:var(--brand);font-size:9px;letter-spacing:.16em">GET IN TOUCH</span>
           <h3 class="display fw-bold mt-2 mb-1" style="font-size:22px">Send Us a Message</h3>
           <p class="small text-secondary mb-4" style="font-size:12px">Fill in the form and we'll get back to you within 24 hours.</p>
-          <form class="contact-form" onsubmit="alert('Thank you! Your message has been sent. We will get back to you shortly.');return false">
-            <div class="row g-3">
-              <div class="col-md-6"><label class="form-label small fw-semibold">Name</label><input type="text" class="form-control" placeholder="Your full name" required></div>
-              <div class="col-md-6"><label class="form-label small fw-semibold">Email</label><input type="email" class="form-control" placeholder="you@example.com" required></div>
-              <div class="col-md-6"><label class="form-label small fw-semibold">Phone</label><input type="tel" class="form-control" placeholder="+91 70084 32909"></div>
-              <div class="col-md-6"><label class="form-label small fw-semibold">Subject</label><select class="form-select"><option>General enquiry</option><option>Bulk / corporate order</option><option>Design help</option><option>Order status</option></select></div>
-              <div class="col-12"><label class="form-label small fw-semibold">Message</label><textarea class="form-control" rows="5" placeholder="Tell us what you need…" required></textarea></div>
-              <div class="col-12 d-flex flex-wrap gap-2 align-items-center">
-                <button type="submit" class="btn btn-brand rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center gap-1" style="font-size:13px;height:44px">Send Message <i data-lucide="send" style="width:14px;height:14px"></i></button>
-                <a href="https://wa.me/917008432909" target="_blank" rel="noopener" class="btn btn-outline-secondary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center gap-1" style="font-size:13px;height:44px"><i class="bi bi-whatsapp"></i> WhatsApp Us</a>
-              </div>
-            </div>
-          </form>
+          <form id="contactForm" class="contact-form">
+  <div class="row g-3">
+    <div class="col-md-6"><label class="form-label small fw-semibold">Name</label><input type="text" name="name" class="form-control" placeholder="Your full name" required></div>
+    <div class="col-md-6"><label class="form-label small fw-semibold">Email</label><input type="email" name="email" class="form-control" placeholder="you@example.com" required></div>
+    <div class="col-md-6"><label class="form-label small fw-semibold">Phone</label><input type="tel" name="phone" class="form-control" placeholder="+91 70084 32909"></div>
+    <div class="col-md-6"><label class="form-label small fw-semibold">Subject</label><input type="text" name="subject" class="form-control" placeholder="Enter the subject"></div>
+    <div class="col-12"><label class="form-label small fw-semibold">Message</label><textarea name="message" class="form-control" rows="5" placeholder="Tell us what you need…" required></textarea></div>
+    <div class="col-12" id="contactFormAlert"></div>
+    <div class="col-12 d-flex flex-wrap gap-2 align-items-center">
+      <button type="submit" id="contactSubmitBtn" class="btn btn-brand rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center gap-1" style="font-size:13px;height:44px">
+        <span class="btn-text">Send Message</span> <i data-lucide="send" style="width:14px;height:14px"></i>
+      </button>
+      <a href="https://wa.me/917008432909" target="_blank" rel="noopener" class="btn btn-outline-secondary rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center gap-1" style="font-size:13px;height:44px"><i class="bi bi-whatsapp"></i> WhatsApp Us</a>
+    </div>
+  </div>
+</form>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const form = this;
+  const btn = document.getElementById('contactSubmitBtn');
+  const btnText = btn.querySelector('.btn-text');
+  const alertBox = document.getElementById('contactFormAlert');
+
+  btn.disabled = true;
+  btnText.textContent = 'Sending...';
+  alertBox.innerHTML = '';
+
+  fetch('send.php', { method: 'POST', body: new FormData(form) })
+    .then(res => res.json())
+    .then(data => {
+      const cls = data.success ? 'alert-success' : 'alert-danger';
+      alertBox.innerHTML = '<div class="alert ' + cls + ' py-2 px-3 mb-0 small">' + data.message + '</div>';
+      if (data.success) form.reset();
+    })
+    .catch(() => {
+      alertBox.innerHTML = '<div class="alert alert-danger py-2 px-3 mb-0 small">Something went wrong. Please try again later.</div>';
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btnText.textContent = 'Send Message';
+    });
+});
+</script>
         </div>
       </div>
     </div>

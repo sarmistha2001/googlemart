@@ -18,6 +18,8 @@ $nav = [
 <title><?= e($page_title ?? 'Admin') ?> — Google Mart Admin</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="../assets/images/logo.jpeg">
 <style>
   :root{--brand:#700895;--brand-dark:#5a0678;--brand-light:#f5f0ff;--bg:#f4f5fa}
   body{background:var(--bg);font-family:Inter,system-ui,-apple-system,sans-serif}
