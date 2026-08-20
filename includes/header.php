@@ -140,7 +140,7 @@ function resolve_menu_link(string $label, string $categorySlug): string
 <div class="d-none  d-lg-block position-relative" style="background:#f8f9fa;border-top:1px solid #eee;border-bottom:1px solid #eee">
   <div class="menu-80">
     <div class="d-flex justify-content-center align-items-stretch" style="gap:0;overflow:visible">
-      <?php $gi = 0; foreach ($GMENU as $gm): $style = $gi === 0 ? 'color:#f47916!important;font-weight:700;' : 'font-weight:500;'; ?>
+      <?php $gi = 0; foreach ($GMENU as $gm): $style = $gi === 0 ? 'color:#e8488e!important;font-weight:700;' : 'font-weight:500;'; ?>
       <div class="mega-item position-static d-flex align-items-center"><a href="<?= e($gm['link']) ?>" class="nav-link px-2 d-flex align-items-center gap-1" data-mega="<?= e($gm['key']) ?>" style="<?= $style ?>font-size:13px;padding:10px 12px;white-space:nowrap"><?= e($gm['title']) ?> <i data-lucide="chevron-down" style="width:10px;height:10px;opacity:.6" class="mega-chevron"></i></a></div>
       <?php $gi++; endforeach; ?>
     </div>
@@ -154,7 +154,7 @@ function resolve_menu_link(string $label, string $categorySlug): string
         <div class="row g-3">
           <?php foreach ($gm['groups'] as $grp): $heading = array_shift($grp); ?>
           <div class="col-6 col-lg-3">
-            <div class="small fw-bold text-uppercase mb-1" style="font-size:11px;letter-spacing:.05em;color:#700895"><?= e($heading) ?></div>
+            <div class="small fw-bold text-uppercase mb-1" style="font-size:11px;letter-spacing:.05em;color:#02155c"><?= e($heading) ?></div>
             <?php foreach ($grp as $lk): ?>
             <a href="<?= e(resolve_menu_link($lk[0], $lk[1])) ?>" class="d-block text-decoration-none small py-1" style="color:#334155;font-size:12px;line-height:1.6"><?= e($lk[0]) ?></a>
             <?php endforeach; ?>
@@ -184,7 +184,7 @@ function resolve_menu_link(string $label, string $categorySlug): string
         <div class="collapse" id="<?= $panelId ?>">
           <div class="pb-2 ps-3">
             <?php foreach ($gm['groups'] as $grp): $h = array_shift($grp); ?>
-            <div class="small fw-bold text-uppercase mt-2 mb-1" style="font-size:10px;letter-spacing:.05em;color:#700895"><?= e($h) ?></div>
+            <div class="small fw-bold text-uppercase mt-2 mb-1" style="font-size:10px;letter-spacing:.05em;color:#02155c"><?= e($h) ?></div>
             <?php foreach ($grp as $lk): ?>
             <a href="<?= e(resolve_menu_link($lk[0], $lk[1])) ?>" class="text-decoration-none text-secondary d-block" style="padding:4px 0 4px 10px;font-size:13px"><?= e($lk[0]) ?></a>
             <?php endforeach; ?>

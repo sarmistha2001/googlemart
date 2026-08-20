@@ -1,10 +1,10 @@
 :root {
-    --brand: #e4007c;
-    --brandDark: #b30064;
+    --brand: #02155c;
+    --brandDark: #040e32;
     --brandLight: #fdf0f8;
     --accent: #fff200;
     --cyan: #00aeef;
-    --ink: #231f20;
+    --ink: #02155c;
     --radius: 20px;
 }
 * {
@@ -678,7 +678,7 @@ img {
     background: #02155c !important;
     border-color: #020c30 !important;
     color: #fff !important;
-    box-shadow: 0 6px 20px rgba(218, 72, 134, 0.5);
+    box-shadow: 0 6px 20px rgba(2, 21, 92, 0.5);
 }
 /* Inner page breadcrumb hero */
 .page-hero {
